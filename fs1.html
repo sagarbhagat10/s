@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script data-require="angular.js@1.4.0-beta.6" data-semver="1.4.0-beta.6" src="https://code.angularjs.org/1.4.0-beta.6/angular.js">
+  </script> 
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+ <script>
+   //creating an application module
+var studentAppModule = angular.module("studentApp", []);
+
+//The below code will read the data from student.json file and will pass to the $scope variable 
+studentAppModule.controller("StudentCtrl", function($scope, $http){    
+            $http.get('data/student.json') //reading the student.json file
+            
+                .success (function(data){
+                        $scope.students = data; // binding the data to the $scope variable
+                    })
+                .error(function(data, status) {
+                        console.error('failure loading the student record', status, data);
+                        $scope.students = { }; //return blank record if something goes wrong
+                });
+    } 
+);//end controller
+
+ </script>
+</head>
+
+<body ng-app="studentApp">
+        <div align="center"><b><u><font size="8px">Student Information</font></u></b></div>
+        <div ng-controller="StudentCtrl" align="center">  
+            <table border="1">
+                <tr>
+                      
+                      <th>Name</th> 
+                      <th>Photo</th>                 
+                      <th>Gender</th>
+                      <th>English</th>
+                      <th>Maths</th>
+                      <th>Combined Marks in English and Maths</th>                      
+                </tr>
+                <tr ng-repeat="student in students">
+                         
+                      <td><span>{{student.name}}</span></td>    
+                      <td><span><img src={{student.photo}} width="100px" height="100px" /></span></td>                 
+                      <td><span>{{student.gender}}</span></td>
+                      <td><span>{{student.english}}</span></td>
+                      <td><span>{{student.maths}}</span></td> 
+                      <td><span>{{ (student.english)--(student.maths) }}</span></td> 
+                </tr>             
+            </table>
+        </div>        
+    </body>
+</html>
